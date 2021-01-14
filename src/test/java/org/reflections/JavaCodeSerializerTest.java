@@ -12,9 +12,14 @@ import java.util.Collections;
 import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
-import static org.reflections.TestModel.*;
+import static org.reflections.TestModel.AC2;
+import static org.reflections.TestModel.C1;
+import static org.reflections.TestModel.C2;
+import static org.reflections.TestModel.C4;
 
-/** */
+/**
+ *
+ */
 public class JavaCodeSerializerTest {
 
     @BeforeClass

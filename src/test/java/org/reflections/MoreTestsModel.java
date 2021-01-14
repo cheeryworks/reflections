@@ -11,7 +11,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public class MoreTestsModel {
 
     @CyclicAnnotation
-    public @Retention(RUNTIME) @interface CyclicAnnotation {}
+    @Retention(RUNTIME)
+    public @interface CyclicAnnotation {
+    }
 
     @Target(ElementType.TYPE)
     @Retention(RUNTIME)
@@ -21,22 +23,29 @@ public class MoreTestsModel {
 
     @Meta("a")
     @Retention(RUNTIME)
-    @interface A {}
+    @interface A {
+    }
 
     @Meta("b")
     @Retention(RUNTIME)
-    @interface B {}
+    @interface B {
+    }
 
     @A
-    class A1 {}
+    class A1 {
+    }
+
     @B
-    class B1 {}
+    class B1 {
+    }
+
     @A
-    class A2 {}
+    class A2 {
+    }
 
     @Retention(RetentionPolicy.RUNTIME)
     public @interface TestAnnotation {
-        public String value();
+        String value();
     }
 
     @TestAnnotation("foo foo foo")

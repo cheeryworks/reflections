@@ -10,9 +10,9 @@ import java.util.Set;
 
 public class ReflectionsExpandSupertypesTest {
 
-    private final static String packagePrefix =
+    private static final String PACKAGE_PREFIX =
             "org.reflections.ReflectionsExpandSupertypesTest\\$TestModel\\$ScannedScope\\$.*";
-    private FilterBuilder inputsFilter = new FilterBuilder().include(packagePrefix);
+    private FilterBuilder inputsFilter = new FilterBuilder().include(PACKAGE_PREFIX);
 
     public interface TestModel {
         interface A {

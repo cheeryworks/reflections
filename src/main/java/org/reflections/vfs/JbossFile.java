@@ -23,7 +23,7 @@ public class JbossFile implements Vfs.File {
     @Override
     public String getRelativePath() {
         String filepath  = virtualFile.getPathName();
-        if(filepath.startsWith(root.getPath())) {
+        if (filepath.startsWith(root.getPath())) {
             return filepath.substring(root.getPath().length() + 1);
         }
 

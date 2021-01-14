@@ -11,16 +11,16 @@ import static org.junit.Assert.assertTrue;
  */
 public class FilterBuilderTest {
 
-  @Test
-  public void test_include() {
-      FilterBuilder filter = new FilterBuilder().include("org\\.reflections.*");
-      assertTrue(filter.test("org.reflections.Reflections"));
-      assertTrue(filter.test("org.reflections.foo.Reflections"));
-      assertFalse(filter.test("org.foobar.Reflections"));
-  }
+    @Test
+    public void testInclude() {
+        FilterBuilder filter = new FilterBuilder().include("org\\.reflections.*");
+        assertTrue(filter.test("org.reflections.Reflections"));
+        assertTrue(filter.test("org.reflections.foo.Reflections"));
+        assertFalse(filter.test("org.foobar.Reflections"));
+    }
 
     @Test
-    public void test_includePackage() {
+    public void testIncludePackage() {
         FilterBuilder filter = new FilterBuilder().includePackage("org.reflections");
         assertTrue(filter.test("org.reflections.Reflections"));
         assertTrue(filter.test("org.reflections.foo.Reflections"));
@@ -28,7 +28,7 @@ public class FilterBuilderTest {
     }
 
     @Test
-    public void test_includePackageMultiple() {
+    public void testIncludePackageMultiple() {
         FilterBuilder filter = new FilterBuilder().includePackage("org.reflections", "org.foo");
         assertTrue(filter.test("org.reflections.Reflections"));
         assertTrue(filter.test("org.reflections.foo.Reflections"));
@@ -38,7 +38,7 @@ public class FilterBuilderTest {
     }
 
     @Test
-    public void test_includePackagebyClass() {
+    public void testIncludePackagebyClass() {
         FilterBuilder filter = new FilterBuilder().includePackage(Reflections.class);
         assertTrue(filter.test("org.reflections.Reflections"));
         assertTrue(filter.test("org.reflections.foo.Reflections"));
@@ -47,7 +47,7 @@ public class FilterBuilderTest {
 
     //-----------------------------------------------------------------------
     @Test
-    public void test_exclude() {
+    public void testExclude() {
         FilterBuilder filter = new FilterBuilder().exclude("org\\.reflections.*");
         assertFalse(filter.test("org.reflections.Reflections"));
         assertFalse(filter.test("org.reflections.foo.Reflections"));
@@ -55,7 +55,7 @@ public class FilterBuilderTest {
     }
 
     @Test
-    public void test_excludePackage() {
+    public void testExcludePackage() {
         FilterBuilder filter = new FilterBuilder().excludePackage("org.reflections");
         assertFalse(filter.test("org.reflections.Reflections"));
         assertFalse(filter.test("org.reflections.foo.Reflections"));
@@ -63,17 +63,17 @@ public class FilterBuilderTest {
     }
 
     @Test
-    public void test_excludePackageMultiple() {
-      FilterBuilder filter = new FilterBuilder().excludePackage("org.reflections", "org.foo");
-      assertFalse(filter.test("org.reflections.Reflections"));
-      assertFalse(filter.test("org.reflections.foo.Reflections"));
-      assertFalse(filter.test("org.foo.Reflections"));
-      assertFalse(filter.test("org.foo.bar.Reflections"));
-      assertTrue(filter.test("org.bar.Reflections"));
+    public void testExcludePackageMultiple() {
+        FilterBuilder filter = new FilterBuilder().excludePackage("org.reflections", "org.foo");
+        assertFalse(filter.test("org.reflections.Reflections"));
+        assertFalse(filter.test("org.reflections.foo.Reflections"));
+        assertFalse(filter.test("org.foo.Reflections"));
+        assertFalse(filter.test("org.foo.bar.Reflections"));
+        assertTrue(filter.test("org.bar.Reflections"));
     }
 
     @Test
-    public void test_excludePackageByClass() {
+    public void testExcludePackageByClass() {
         FilterBuilder filter = new FilterBuilder().excludePackage(Reflections.class);
         assertFalse(filter.test("org.reflections.Reflections"));
         assertFalse(filter.test("org.reflections.foo.Reflections"));
@@ -82,7 +82,7 @@ public class FilterBuilderTest {
 
     //-----------------------------------------------------------------------
     @Test
-    public void test_parse_include() {
+    public void testParseInclude() {
         FilterBuilder filter = FilterBuilder.parse("+org.reflections.*");
         assertTrue(filter.test("org.reflections.Reflections"));
         assertTrue(filter.test("org.reflections.foo.Reflections"));
@@ -91,7 +91,7 @@ public class FilterBuilderTest {
     }
 
     @Test
-    public void test_parse_include_notRegex() {
+    public void testParseIncludeNotRegex() {
         FilterBuilder filter = FilterBuilder.parse("+org.reflections");
         assertFalse(filter.test("org.reflections.Reflections"));
         assertFalse(filter.test("org.reflections.foo.Reflections"));
@@ -100,7 +100,7 @@ public class FilterBuilderTest {
     }
 
     @Test
-    public void test_parse_exclude() {
+    public void testParseExclude() {
         FilterBuilder filter = FilterBuilder.parse("-org.reflections.*");
         assertFalse(filter.test("org.reflections.Reflections"));
         assertFalse(filter.test("org.reflections.foo.Reflections"));
@@ -109,7 +109,7 @@ public class FilterBuilderTest {
     }
 
     @Test
-    public void test_parse_exclude_notRegex() {
+    public void testParseExcludeNotRegex() {
         FilterBuilder filter = FilterBuilder.parse("-org.reflections");
         assertTrue(filter.test("org.reflections.Reflections"));
         assertTrue(filter.test("org.reflections.foo.Reflections"));
@@ -118,7 +118,7 @@ public class FilterBuilderTest {
     }
 
     @Test
-    public void test_parse_include_exclude() {
+    public void testParseIncludeExclude() {
         FilterBuilder filter = FilterBuilder.parse("+org.reflections.*, -org.reflections.foo.*");
         assertTrue(filter.test("org.reflections.Reflections"));
         assertFalse(filter.test("org.reflections.foo.Reflections"));
@@ -127,7 +127,7 @@ public class FilterBuilderTest {
 
     //-----------------------------------------------------------------------
     @Test
-    public void test_parsePackages_include() {
+    public void testParsePackagesInclude() {
         FilterBuilder filter = FilterBuilder.parsePackages("+org.reflections");
         assertTrue(filter.test("org.reflections.Reflections"));
         assertTrue(filter.test("org.reflections.foo.Reflections"));
@@ -136,7 +136,7 @@ public class FilterBuilderTest {
     }
 
     @Test
-    public void test_parsePackages_include_trailingDot() {
+    public void testParsePackagesIncludeTrailingDot() {
         FilterBuilder filter = FilterBuilder.parsePackages("+org.reflections.");
         assertTrue(filter.test("org.reflections.Reflections"));
         assertTrue(filter.test("org.reflections.foo.Reflections"));
@@ -145,7 +145,7 @@ public class FilterBuilderTest {
     }
 
     @Test
-    public void test_parsePackages_exclude() {
+    public void testParsePackagesExclude() {
         FilterBuilder filter = FilterBuilder.parsePackages("-org.reflections");
         assertFalse(filter.test("org.reflections.Reflections"));
         assertFalse(filter.test("org.reflections.foo.Reflections"));
@@ -154,7 +154,7 @@ public class FilterBuilderTest {
     }
 
     @Test
-    public void test_parsePackages_exclude_trailingDot() {
+    public void testParsePackagesExcludeTrailingDot() {
         FilterBuilder filter = FilterBuilder.parsePackages("-org.reflections.");
         assertFalse(filter.test("org.reflections.Reflections"));
         assertFalse(filter.test("org.reflections.foo.Reflections"));
@@ -163,7 +163,7 @@ public class FilterBuilderTest {
     }
 
     @Test
-    public void test_parsePackages_include_exclude() {
+    public void testParsePackagesIncludeExclude() {
         FilterBuilder filter = FilterBuilder.parsePackages("+org.reflections, -org.reflections.foo");
         assertTrue(filter.test("org.reflections.Reflections"));
         assertFalse(filter.test("org.reflections.foo.Reflections"));

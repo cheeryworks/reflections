@@ -19,7 +19,7 @@ public final class ClasspathHelperTest {
     @Test
     public void testForClassLoaderShouldntReorderUrls() throws MalformedURLException {
         // testing same URL set with different order to not fall into the case when HashSet orders elements in the same order as we do
-        final URL[] urls1 = {new URL("file", "foo", 1111, "foo"), new URL("file", "bar", 1111, "bar"),new URL("file", "baz", 1111, "baz")};
+        final URL[] urls1 = {new URL("file", "foo", 1111, "foo"), new URL("file", "bar", 1111, "bar"), new URL("file", "baz", 1111, "baz")};
         final List<URL> urlsList2 = Arrays.asList(urls1);
         Collections.reverse(urlsList2);
         final URL[] urls2 = urlsList2.toArray(new URL[urlsList2.size()]);

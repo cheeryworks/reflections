@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.Stack;
 import java.util.jar.JarFile;
 
-public class JbossDir implements Vfs.Dir {
+public final class JbossDir implements Vfs.Dir {
 
     private final VirtualFile virtualFile;
 
@@ -18,7 +18,7 @@ public class JbossDir implements Vfs.Dir {
 
     public static Vfs.Dir createDir(URL url) throws Exception {
         VirtualFile virtualFile = (VirtualFile) url.openConnection().getContent();
-        if(virtualFile.isFile()) {
+        if (virtualFile.isFile()) {
             return new ZipDir(new JarFile(virtualFile.getPhysicalFile()));
         }
         return new JbossDir(virtualFile);

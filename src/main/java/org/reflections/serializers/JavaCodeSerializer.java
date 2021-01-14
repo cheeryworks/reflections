@@ -24,9 +24,13 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static org.reflections.Reflections.log;
-import static org.reflections.util.Utils.*;
+import static org.reflections.util.Utils.index;
+import static org.reflections.util.Utils.join;
+import static org.reflections.util.Utils.prepareFile;
+import static org.reflections.util.Utils.repeat;
 
-/** Serialization of Reflections to java code
+/**
+ * Serialization of Reflections to java code
  * <p> Serializes types and types elements into interfaces respectively to fully qualified name,
  * <p> For example, after saving with JavaCodeSerializer:
  * <pre>
@@ -46,7 +50,7 @@ import static org.reflections.util.Utils.*;
  *          public interface m1 {}
  *          public interface m2 {}
  *         }
- *	...
+ *  ...
  * }
  * </pre>
  * <p> Use the different resolve methods to resolve the serialized element into Class, Field or Method. for example:
@@ -56,14 +60,14 @@ import static org.reflections.util.Utils.*;
  * </pre>
  * <p>The {@link #save(org.reflections.Reflections, String)} method filename should be in the pattern: path/path/path/package.package.classname
  * <p>depends on Reflections configured with {@link org.reflections.scanners.TypeElementsScanner}
- * */
+ */
 public class JavaCodeSerializer implements Serializer {
 
-    private static final String pathSeparator = "_";
-    private static final String doubleSeparator = "__";
-    private static final String dotSeparator = ".";
-    private static final String arrayDescriptor = "$$";
-    private static final String tokenSeparator = "_";
+    private static final String PATH_SEPARATOR = "_";
+    private static final String DOUBLE_SEPARATOR = "__";
+    private static final String DOT_SEPARATOR = ".";
+    private static final String ARRAY_DESCRIPTOR = "$$";
+    private static final String TOKEN_SEPARATOR = "_";
 
     public Reflections read(InputStream inputStream) {
         throw new UnsupportedOperationException("read is not implemented on JavaCodeSerializer");
@@ -141,12 +145,12 @@ public class JavaCodeSerializer implements Serializer {
 
             //indent left
             for (int j = prevPaths.size(); j > i; j--) {
-                sb.append(repeat("\t", --indent)).append("}\n");
+                sb.append(repeat("    ", --indent)).append("}\n");
             }
 
             //indent right - add packages
             for (int j = i; j < typePaths.size() - 1; j++) {
-                sb.append(repeat("\t", indent++)).append("public interface ").append(getNonDuplicateName(typePaths.get(j), typePaths, j)).append(" {\n");
+                sb.append(repeat("    ", indent++)).append("public interface ").append(getNonDuplicateName(typePaths.get(j), typePaths, j)).append(" {\n");
             }
 
             //indent right - add class
@@ -171,7 +175,7 @@ public class JavaCodeSerializer implements Serializer {
 
                         String paramsDescriptor = "";
                         if (params.length() != 0) {
-                            paramsDescriptor = tokenSeparator + params.replace(dotSeparator, tokenSeparator).replace(", ", doubleSeparator).replace("[]", arrayDescriptor);
+                            paramsDescriptor = TOKEN_SEPARATOR + params.replace(DOT_SEPARATOR, TOKEN_SEPARATOR).replace(", ", DOUBLE_SEPARATOR).replace("[]", ARRAY_DESCRIPTOR);
                         }
                         String normalized = name + paramsDescriptor;
                         if (!methods.contains(name)) {
@@ -187,37 +191,37 @@ public class JavaCodeSerializer implements Serializer {
             }
 
             //add class and it's fields and methods
-            sb.append(repeat("\t", indent++)).append("public interface ").append(getNonDuplicateName(className, typePaths, typePaths.size() - 1)).append(" {\n");
+            sb.append(repeat("    ", indent++)).append("public interface ").append(getNonDuplicateName(className, typePaths, typePaths.size() - 1)).append(" {\n");
 
             //add fields
             if (!fields.isEmpty()) {
-                sb.append(repeat("\t", indent++)).append("public interface fields {\n");
+                sb.append(repeat("    ", indent++)).append("public interface fields {\n");
                 for (String field : fields) {
-                    sb.append(repeat("\t", indent)).append("public interface ").append(getNonDuplicateName(field, typePaths)).append(" {}\n");
+                    sb.append(repeat("    ", indent)).append("public interface ").append(getNonDuplicateName(field, typePaths)).append(" {}\n");
                 }
-                sb.append(repeat("\t", --indent)).append("}\n");
+                sb.append(repeat("    ", --indent)).append("}\n");
             }
 
             //add methods
             if (!methods.isEmpty()) {
-                sb.append(repeat("\t", indent++)).append("public interface methods {\n");
+                sb.append(repeat("    ", indent++)).append("public interface methods {\n");
                 for (String method : methods) {
                     String methodName = getNonDuplicateName(method, fields);
 
-                    sb.append(repeat("\t", indent)).append("public interface ").append(getNonDuplicateName(methodName, typePaths)).append(" {}\n");
+                    sb.append(repeat("    ", indent)).append("public interface ").append(getNonDuplicateName(methodName, typePaths)).append(" {}\n");
                 }
-                sb.append(repeat("\t", --indent)).append("}\n");
+                sb.append(repeat("    ", --indent)).append("}\n");
             }
 
             //add annotations
             if (!annotations.isEmpty()) {
-                sb.append(repeat("\t", indent++)).append("public interface annotations {\n");
+                sb.append(repeat("    ", indent++)).append("public interface annotations {\n");
                 for (String annotation : annotations) {
                     String nonDuplicateName = annotation;
                     nonDuplicateName = getNonDuplicateName(nonDuplicateName, typePaths);
-                    sb.append(repeat("\t", indent)).append("public interface ").append(nonDuplicateName).append(" {}\n");
+                    sb.append(repeat("    ", indent)).append("public interface ").append(nonDuplicateName).append(" {}\n");
                 }
-                sb.append(repeat("\t", --indent)).append("}\n");
+                sb.append(repeat("    ", --indent)).append("}\n");
             }
 
             prevPaths = typePaths;
@@ -226,7 +230,7 @@ public class JavaCodeSerializer implements Serializer {
 
         //close indention
         for (int j = prevPaths.size(); j >= 1; j--) {
-            sb.append(repeat("\t", j)).append("}\n");
+            sb.append(repeat("    ", j)).append("}\n");
         }
 
         return sb.toString();
@@ -236,7 +240,7 @@ public class JavaCodeSerializer implements Serializer {
         String normalized = normalize(candidate);
         for (int i = 0; i < offset; i++) {
             if (normalized.equals(prev.get(i))) {
-                return getNonDuplicateName(normalized + tokenSeparator, prev, offset);
+                return getNonDuplicateName(normalized + TOKEN_SEPARATOR, prev, offset);
             }
         }
 
@@ -244,7 +248,7 @@ public class JavaCodeSerializer implements Serializer {
     }
 
     private String normalize(String candidate) {
-        return candidate.replace(dotSeparator, pathSeparator);
+        return candidate.replace(DOT_SEPARATOR, PATH_SEPARATOR);
     }
 
     private String getNonDuplicateName(String candidate, List<String> prev) {
@@ -285,7 +289,7 @@ public class JavaCodeSerializer implements Serializer {
 
     public static Annotation resolveAnnotation(Class annotation) {
         try {
-            String name = annotation.getSimpleName().replace(pathSeparator, dotSeparator);
+            String name = annotation.getSimpleName().replace(PATH_SEPARATOR, DOT_SEPARATOR);
             Class<?> declaringClass = annotation.getDeclaringClass().getDeclaringClass();
             Class<?> aClass = resolveClassOf(declaringClass);
             Class<? extends Annotation> aClass1 = (Class<? extends Annotation>) ReflectionUtils.forName(name);
@@ -302,12 +306,12 @@ public class JavaCodeSerializer implements Serializer {
         try {
             String methodName;
             Class<?>[] paramTypes;
-            if (methodOgnl.contains(tokenSeparator)) {
-                methodName = methodOgnl.substring(0, methodOgnl.indexOf(tokenSeparator));
-                String[] params = methodOgnl.substring(methodOgnl.indexOf(tokenSeparator) + 1).split(doubleSeparator);
+            if (methodOgnl.contains(TOKEN_SEPARATOR)) {
+                methodName = methodOgnl.substring(0, methodOgnl.indexOf(TOKEN_SEPARATOR));
+                String[] params = methodOgnl.substring(methodOgnl.indexOf(TOKEN_SEPARATOR) + 1).split(DOUBLE_SEPARATOR);
                 paramTypes = new Class<?>[params.length];
                 for (int i = 0; i < params.length; i++) {
-                    String typeName = params[i].replace(arrayDescriptor, "[]").replace(pathSeparator, dotSeparator);
+                    String typeName = params[i].replace(ARRAY_DESCRIPTOR, "[]").replace(PATH_SEPARATOR, DOT_SEPARATOR);
                     paramTypes[i] = ReflectionUtils.forName(typeName);
                 }
             } else {

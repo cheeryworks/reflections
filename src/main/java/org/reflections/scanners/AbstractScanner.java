@@ -15,8 +15,8 @@ import java.util.function.Predicate;
 @SuppressWarnings({"RawUseOfParameterizedType"})
 public abstract class AbstractScanner implements Scanner {
 
-	private Configuration configuration;
-	private Predicate<String> resultFilter = s -> true; //accept all by default
+    private Configuration configuration;
+    private Predicate<String> resultFilter = s -> true; //accept all by default
 
     public boolean acceptsInput(String file) {
         return getMetadataAdapter().acceptsInput(file);
@@ -58,24 +58,27 @@ public abstract class AbstractScanner implements Scanner {
     }
 
     public Scanner filterResultsBy(Predicate<String> filter) {
-        this.setResultFilter(filter); return this;
+        this.setResultFilter(filter);
+        return this;
     }
 
     //
     public boolean acceptResult(final String fqn) {
-		return fqn != null && resultFilter.test(fqn);
-	}
+        return fqn != null && resultFilter.test(fqn);
+    }
 
-	protected MetadataAdapter getMetadataAdapter() {
-		return configuration.getMetadataAdapter();
-	}
+    protected MetadataAdapter getMetadataAdapter() {
+        return configuration.getMetadataAdapter();
+    }
 
     //
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         return this == o || o != null && getClass() == o.getClass();
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         return getClass().hashCode();
     }
 }

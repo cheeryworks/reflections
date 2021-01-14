@@ -22,7 +22,7 @@ public class ReflectionsThreadSafenessTest {
      * https://github.com/ronmamo/reflections/issues/81
      */
     @Test
-    public void reflections_scan_is_thread_safe() throws Exception {
+    public void reflectionsScanIsThreadSafe() throws Exception {
 
         Callable<Set<Class<? extends Logger>>> callable = () -> {
             final Reflections reflections = new Reflections(new ConfigurationBuilder()

@@ -31,8 +31,30 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
-import static org.reflections.TestModel.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
+import static org.reflections.TestModel.AC1;
+import static org.reflections.TestModel.AC1n;
+import static org.reflections.TestModel.AC2;
+import static org.reflections.TestModel.AC3;
+import static org.reflections.TestModel.AF1;
+import static org.reflections.TestModel.AI1;
+import static org.reflections.TestModel.AI2;
+import static org.reflections.TestModel.AM1;
+import static org.reflections.TestModel.C1;
+import static org.reflections.TestModel.C2;
+import static org.reflections.TestModel.C3;
+import static org.reflections.TestModel.C4;
+import static org.reflections.TestModel.C5;
+import static org.reflections.TestModel.C6;
+import static org.reflections.TestModel.C7;
+import static org.reflections.TestModel.I1;
+import static org.reflections.TestModel.I2;
+import static org.reflections.TestModel.I3;
+import static org.reflections.TestModel.MAI1;
+import static org.reflections.TestModel.Usage;
 import static org.reflections.util.Utils.index;
 
 /**
@@ -40,14 +62,14 @@ import static org.reflections.util.Utils.index;
  */
 @SuppressWarnings("unchecked")
 public class ReflectionsTest {
-    public static final FilterBuilder TestModelFilter = new FilterBuilder().include("org.reflections.TestModel\\$.*");
+    public static final FilterBuilder TEST_MODEL_FILTER = new FilterBuilder().include("org.reflections.TestModel\\$.*");
     static Reflections reflections;
 
     @BeforeClass
     public static void init() {
         reflections = new Reflections(new ConfigurationBuilder()
                 .setUrls(Collections.singletonList(ClasspathHelper.forClass(TestModel.class)))
-                .filterInputsBy(TestModelFilter)
+                .filterInputsBy(TEST_MODEL_FILTER)
                 .setScanners(
                         new SubTypesScanner(false),
                         new TypeAnnotationsScanner(),
@@ -94,8 +116,16 @@ public class ReflectionsTest {
 
         //annotation member value matching
         AC2 ac2 = new AC2() {
-            public String value() {return "ugh?!";}
-            public Class<? extends Annotation> annotationType() {return AC2.class;}};
+
+            public String value() {
+                return "ugh?!";
+            }
+
+            public Class<? extends Annotation> annotationType() {
+                return AC2.class;
+            }
+
+        };
 
         assertThat(reflections.getTypesAnnotatedWith(ac2), are(C3.class, C5.class, I3.class, C6.class, AC3.class, C7.class));
 
@@ -107,18 +137,25 @@ public class ReflectionsTest {
         try {
             assertThat(reflections.getMethodsAnnotatedWith(AM1.class),
                     are(C4.class.getDeclaredMethod("m1"),
-                        C4.class.getDeclaredMethod("m1", int.class, String[].class),
-                        C4.class.getDeclaredMethod("m1", int[][].class, String[][].class),
-                        C4.class.getDeclaredMethod("m3")));
+                            C4.class.getDeclaredMethod("m1", int.class, String[].class),
+                            C4.class.getDeclaredMethod("m1", int[][].class, String[][].class),
+                            C4.class.getDeclaredMethod("m3")));
 
             AM1 am1 = new AM1() {
-                public String value() {return "1";}
-                public Class<? extends Annotation> annotationType() {return AM1.class;}
+
+                public String value() {
+                    return "1";
+                }
+
+                public Class<? extends Annotation> annotationType() {
+                    return AM1.class;
+                }
+
             };
             assertThat(reflections.getMethodsAnnotatedWith(am1),
                     are(C4.class.getDeclaredMethod("m1"),
-                        C4.class.getDeclaredMethod("m1", int.class, String[].class),
-                        C4.class.getDeclaredMethod("m1", int[][].class, String[][].class)));
+                            C4.class.getDeclaredMethod("m1", int.class, String[].class),
+                            C4.class.getDeclaredMethod("m1", int[][].class, String[][].class)));
         } catch (NoSuchMethodException e) {
             fail();
         }
@@ -131,8 +168,15 @@ public class ReflectionsTest {
                     are(C4.class.getDeclaredConstructor(String.class)));
 
             AM1 am1 = new AM1() {
-                public String value() {return "1";}
-                public Class<? extends Annotation> annotationType() {return AM1.class;}
+
+                public String value() {
+                    return "1";
+                }
+
+                public Class<? extends Annotation> annotationType() {
+                    return AM1.class;
+                }
+
             };
             assertThat(reflections.getConstructorsAnnotatedWith(am1),
                     are(C4.class.getDeclaredConstructor(String.class)));
@@ -146,12 +190,18 @@ public class ReflectionsTest {
         try {
             assertThat(reflections.getFieldsAnnotatedWith(AF1.class),
                     are(C4.class.getDeclaredField("f1"),
-                        C4.class.getDeclaredField("f2")
-                        ));
+                            C4.class.getDeclaredField("f2")
+                    ));
 
             assertThat(reflections.getFieldsAnnotatedWith(new AF1() {
-                            public String value() {return "2";}
-                            public Class<? extends Annotation> annotationType() {return AF1.class;}}),
+                        public String value() {
+                            return "2";
+                        }
+
+                        public Class<? extends Annotation> annotationType() {
+                            return AF1.class;
+                        }
+                    }),
                     are(C4.class.getDeclaredField("f2")));
         } catch (NoSuchFieldException e) {
             fail();
@@ -189,8 +239,13 @@ public class ReflectionsTest {
 
             assertThat(reflections.getMethodsWithAnyParamAnnotated(
                     new AM1() {
-                        public String value() { return "2"; }
-                        public Class<? extends Annotation> annotationType() { return AM1.class; }
+                        public String value() {
+                            return "2";
+                        }
+
+                        public Class<? extends Annotation> annotationType() {
+                            return AM1.class;
+                        }
                     }),
                     are(C4.class.getDeclaredMethod("m4", String.class)));
         } catch (NoSuchMethodException e) {
@@ -213,8 +268,13 @@ public class ReflectionsTest {
 
         assertThat(reflections.getConstructorsWithAnyParamAnnotated(
                 new AM1() {
-                    public String value() { return "1"; }
-                    public Class<? extends Annotation> annotationType() { return AM1.class; }
+                    public String value() {
+                        return "1";
+                    }
+
+                    public Class<? extends Annotation> annotationType() {
+                        return AM1.class;
+                    }
                 }),
                 are(C4.class.getDeclaredConstructor(String.class)));
     }
@@ -277,7 +337,7 @@ public class ReflectionsTest {
     @Test
     public void testScannerNotConfigured() {
         try {
-            new Reflections(TestModel.class, TestModelFilter).getMethodsAnnotatedWith(AC1.class);
+            new Reflections(TestModel.class, TEST_MODEL_FILTER).getMethodsAnnotatedWith(AC1.class);
             fail();
         } catch (ReflectionsException e) {
             assertEquals(e.getMessage(), "Scanner " + MethodAnnotationsScanner.class.getSimpleName() + " was not configured");
@@ -305,7 +365,8 @@ public class ReflectionsTest {
     };
 
     private abstract static class Match<T> extends BaseMatcher<T> {
-        public void describeTo(Description description) { }
+        public void describeTo(Description description) {
+        }
     }
 
     public static <T> Matcher<Set<? super T>> are(final T... ts) {

@@ -1,8 +1,47 @@
-.classpath
+# Packages
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases
+*.log
+#*.sql
+*.sqlite
+
+# OS related
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Eclipse related
 .project
-/.settings/
-/target/
-.idea/
-*.ipr
+.settings
+.classpath
+.metadata
+.checkstyle
+
+# Intellij related
+.idea
+*.ids
 *.iml
-TODO
+*.iws
+*.ipr
+
+# Visual Studio Code related
+.vscode
+.factorypath
+
+# Maven generated files
+target
+
+# Gauge generated files
+.gauge

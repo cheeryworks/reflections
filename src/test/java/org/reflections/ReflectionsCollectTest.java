@@ -29,7 +29,7 @@ public class ReflectionsCollectTest extends ReflectionsTest {
     public static void init() {
         Reflections ref = new Reflections(new ConfigurationBuilder()
                 .addUrls(ClasspathHelper.forClass(TestModel.class))
-                .filterInputsBy(TestModelFilter)
+                .filterInputsBy(TEST_MODEL_FILTER)
                 .setScanners(
                         new SubTypesScanner(false),
                         new TypeAnnotationsScanner(),
@@ -41,7 +41,7 @@ public class ReflectionsCollectTest extends ReflectionsTest {
 
         ref = new Reflections(new ConfigurationBuilder()
                 .setUrls(Collections.singletonList(ClasspathHelper.forClass(TestModel.class)))
-                .filterInputsBy(TestModelFilter)
+                .filterInputsBy(TEST_MODEL_FILTER)
                 .setScanners(
                         new MethodParameterScanner()));
 

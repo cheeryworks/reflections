@@ -20,7 +20,7 @@ public class ReflectionsParallelTest extends ReflectionsTest {
     public static void init() {
         reflections = new Reflections(new ConfigurationBuilder()
                 .setUrls(Collections.singletonList(ClasspathHelper.forClass(TestModel.class)))
-                .filterInputsBy(TestModelFilter)
+                .filterInputsBy(TEST_MODEL_FILTER)
                 .setScanners(
                         new SubTypesScanner(false),
                         new TypeAnnotationsScanner(),

@@ -2,21 +2,21 @@ package org.reflections.util;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-public class ConfigurationBuilderTest
-{
+public class ConfigurationBuilderTest {
     @Test
-    public void testCallingAddClassLoaderMoreThanOnce()
-    {
-        ClassLoader fooClassLoader = new ClassLoader() { };
-        ClassLoader barClassLoader = new ClassLoader() { };
+    public void testCallingAddClassLoaderMoreThanOnce() {
+        ClassLoader fooClassLoader = new ClassLoader() {
+        };
+        ClassLoader barClassLoader = new ClassLoader() {
+        };
 
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
-                .addClassLoader( fooClassLoader  );
+                .addClassLoader(fooClassLoader);
 
         // Attempt to add a second class loader
-        configurationBuilder.addClassLoader( barClassLoader );
-        assertTrue( true );
+        configurationBuilder.addClassLoader(barClassLoader);
+        assertTrue(true);
     }
 }
