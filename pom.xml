@@ -16,6 +16,7 @@
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -24,41 +25,47 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- case: when no xml de/serialization -->
         <dependency>
             <groupId>org.dom4j</groupId>
             <artifactId>dom4j</artifactId>
             <version>2.1.1</version>
-            <optional>true</optional> <!-- case: when no xml de/serialization -->
+            <optional>true</optional>
         </dependency>
 
+        <!-- case: when no json de/serialization -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.6</version>
-            <optional>true</optional> <!-- case: when no json de/serialization -->
+            <optional>true</optional>
         </dependency>
 
+        <!-- case: when no servlet environment -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
             <scope>provided</scope>
-            <optional>true</optional> <!-- case: when no servlet environment -->
+            <optional>true</optional>
         </dependency>
 
         <!-- use any implementation you like -->
+
+        <!-- case: when other logging implementation used or logging is not needed -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.24</version>
-            <optional>true</optional> <!-- case: when other logging implementation used or logging is not needed -->
+            <optional>true</optional>
         </dependency>
 
+        <!-- case: when using jboss-vfs -->
         <dependency>
             <groupId>org.jboss</groupId>
             <artifactId>jboss-vfs</artifactId>
             <version>3.2.12.Final</version>
             <scope>provided</scope>
-            <optional>true</optional><!-- case: when using jboss-vfs -->
+            <optional>true</optional>
         </dependency>
 
         <dependency>

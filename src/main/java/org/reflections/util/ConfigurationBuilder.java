@@ -44,9 +44,9 @@ import java.util.stream.Stream;
 public class ConfigurationBuilder implements Configuration {
     private Set<Scanner> scanners;
     private Set<URL> urls;
-    /*lazy*/ protected MetadataAdapter metadataAdapter;
+    private MetadataAdapter metadataAdapter;
     private Predicate<String> inputsFilter;
-    /*lazy*/ private Serializer serializer;
+    private Serializer serializer;
     private ExecutorService executorService;
     private ClassLoader[] classLoaders;
     private boolean expandSuperTypes = true;
@@ -118,6 +118,8 @@ public class ConfigurationBuilder implements Configuration {
                 filter.add((Predicate<String>) param);
             } else if (param instanceof ExecutorService) {
                 builder.setExecutorService((ExecutorService) param);
+            } else if (param instanceof MetadataAdapter) {
+                builder.setMetadataAdapter((MetadataAdapter) param);
             } else throw new ReflectionsException("could not use param " + param);
         }
 
@@ -219,10 +221,12 @@ public class ConfigurationBuilder implements Configuration {
         if (metadataAdapter != null) return metadataAdapter;
         else {
             try {
-                return (metadataAdapter = new JavassistAdapter());
+                Class.forName("javassist.CtClass");
+
+                return metadataAdapter = new JavassistAdapter();
             } catch (Throwable e) {
                 if (Reflections.log != null)
-                    Reflections.log.warn("could not create JavassistAdapter, using JavaReflectionAdapter", e);
+                    Reflections.log.info("JavassistAdapter not available, using JavaReflectionAdapter");
                 return (metadataAdapter = new JavaReflectionAdapter());
             }
         }
