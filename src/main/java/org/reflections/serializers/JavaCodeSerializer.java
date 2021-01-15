@@ -17,7 +17,6 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -102,9 +101,7 @@ public class JavaCodeSerializer implements Serializer {
         //generate
         try {
             StringBuilder sb = new StringBuilder();
-            sb.append("//generated using Reflections JavaCodeSerializer")
-                    .append(" [").append(new Date()).append("]")
-                    .append("\n");
+            sb.append("//generated using Reflections JavaCodeSerializer").append("\n");
             if (packageName.length() != 0) {
                 sb.append("package ").append(packageName).append(";\n");
                 sb.append("\n");
