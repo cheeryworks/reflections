@@ -255,7 +255,7 @@ public class Reflections {
         }
 
         if (log != null) {
-            log.info(format("Reflections took %d ms to scan %d urls, producing %s %s",
+            log.debug(format("Reflections took %d ms to scan %d urls, producing %s %s",
                     System.currentTimeMillis() - time, scannedUrls, producingDescription(store),
                     executorService instanceof ThreadPoolExecutor ?
                             format("[using %d cores]", ((ThreadPoolExecutor) executorService).getMaximumPoolSize()) : ""));
