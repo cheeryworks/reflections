@@ -226,7 +226,7 @@ public class ConfigurationBuilder implements Configuration {
                 return metadataAdapter = new JavassistAdapter();
             } catch (Throwable e) {
                 if (Reflections.log != null)
-                    Reflections.log.info("JavassistAdapter not available, using JavaReflectionAdapter");
+                    Reflections.log.debug("JavassistAdapter not available, using JavaReflectionAdapter");
                 return (metadataAdapter = new JavaReflectionAdapter());
             }
         }
