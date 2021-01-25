@@ -132,7 +132,7 @@
     </pluginRepositories>
     <scm>
         <url>https://github.com/cheeryworks/reflections</url>
-        <connection>scm:git:https://github.com/cheeryworks/reflections</connection>
-        <developerConnection>scm:git:https://github.com/cheeryworks/reflections</developerConnection>
+        <connection>scm:git:git@github.com:cheeryworks/reflections.git</connection>
+        <developerConnection>scm:git:git@github.com:cheeryworks/reflections.git</developerConnection>
     </scm>
 </project>
